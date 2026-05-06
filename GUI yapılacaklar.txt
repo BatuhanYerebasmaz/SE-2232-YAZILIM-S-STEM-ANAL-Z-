@@ -1,0 +1,5 @@
+Parents a View Family Analytics → See statistics such as most-watched movies and average ratings. eklenecek zaten View Family Ratings → See how other family members rated a movie var o değil başka bu
+
+
+Children a 10. Create Personal Watchlists → Save movies they want to watch later.
+11. Track Progress → See how many movies they have watched compared to siblings. eklenecek
