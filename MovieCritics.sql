@@ -59,6 +59,7 @@ CREATE TABLE UserMovieInteractions (
     Rating        INT CHECK (Rating IS NULL OR (Rating >= 1 AND Rating <= 10)),
     Comment       TEXT,
     Watched       BOOLEAN DEFAULT FALSE,
+    Watchlist BOOLEAN DEFAULT FALSE,
     FOREIGN KEY (UserID)  REFERENCES Users(UserId),
     FOREIGN KEY (MovieID) REFERENCES Movies(MovieID),
     UNIQUE KEY uq_user_movie (UserID, MovieID) 
@@ -77,13 +78,13 @@ INSERT INTO Persons (PersonID, FirstName, LastName, DateOfBirth, Nationality) VA
 INSERT INTO Movies (MovieID, Title, ReleaseDate, Language, CountryOfOrigin, Genre, DirectorId, Watched, LeadingActorId, SupportingActorId, About, Rating, Comments, Poster, ParentalRestriction) VALUES
 (101, 'Inception', '2010-07-16', 'English', 'USA', 'Sci-Fi', 1, TRUE, 4, 2, 'A thief who steals corporate secrets through dream-sharing technology.', 9, 'Amazing concept, must watch again.', 'inception_poster.jpg', FALSE),
 (102, 'Pulp Fiction', '1994-10-14', 'English', 'USA', 'Crime', 3, TRUE, 5, 4, 'Intertwined stories from the Los Angeles criminal underworld.', 10, 'A cult masterpiece.', 'pulp_fiction.png', TRUE),
-(103, 'Oppenheimer', '2023-07-21', 'English', 'USA', 'Biography', 1, FALSE, 2, 4, 'The story of J. Robert Oppenheimer, the father of the atomic bomb.', 8, 'Cinematography is outstanding.', 'oppenheimer.webp', TRUE),
+(103, 'Oppenheimer', '2023-07-21', 'English', 'USA', 'Biography', 1, FALSE, 2, 4, 'The story of J. Robert Oppenheimer, the father of the atomic bomb.', 8, 'Cinematography is outstanding.', 'oppenheimer.jpg', TRUE),
 (104, 'Django Unchained', '2012-12-25', 'English', 'USA', 'Western', 3, TRUE, 5, 4, 'A freed slave teams up with a German bounty hunter.', 9, 'Tarantino action at its finest.', 'django.jpg', TRUE),
-(105, 'The Dark Knight', '2008-07-18', 'English', 'USA', 'Action', 1, TRUE, 2, 5, 'The epic battle between Batman and the Joker.', 10, 'The greatest superhero film ever made.', 'dark_knight.jpg', FALSE);
+(105, 'The Dark Knight', '2008-07-18', 'English', 'USA', 'Action', 1, TRUE, 2, 5, 'The epic battle between Batman and the Joker.', 10, 'The greatest superhero film ever made.', 'dark_knight.png', FALSE);
 
 -- Users
 INSERT INTO Users (UserId, Username, Password, UserType, Email) VALUES
-(1, 'Ayse_Murt', 'Ayse123*', 1, 'ayse@email.com'),
+(1, 'Ayse_Murt', 'Ayse123*', 1, 'ayse@email.com'),	
 (2, 'Mehmet_Murt', 'Mehmet88*', 2, 'mehmet@email.com'),
 (3, 'Osman_Murt', '24070006009', 2, 'Osman@email.com'),
 (4, 'Derya_Murt', 'deniz_star', 1, 'Derya@email.com'),
