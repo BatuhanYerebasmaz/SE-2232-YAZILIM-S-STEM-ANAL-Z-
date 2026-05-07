@@ -170,32 +170,29 @@ private void loadGenres() {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1)
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(119, Short.MAX_VALUE)
-                .addComponent(GenreFilterCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(SearchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 425, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(SearchButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(ClearButton1)
-                .addContainerGap(93, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(MarkWatchedButton)
-                    .addComponent(FamilyRatingsButton))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(66, 66, 66)
-                        .addComponent(RateMovieButton))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(58, 58, 58)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(RefreshButton)
-                            .addComponent(AddCommentButton))))
+                        .addGap(0, 123, Short.MAX_VALUE)
+                        .addComponent(GenreFilterCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(SearchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 425, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(SearchButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(ClearButton1)
+                        .addGap(0, 97, Short.MAX_VALUE)))
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(222, 222, 222)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(MarkWatchedButton)
+                    .addComponent(RateMovieButton))
+                .addGap(58, 58, 58)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(RefreshButton)
+                    .addComponent(AddCommentButton)
+                    .addComponent(FamilyRatingsButton))
                 .addGap(37, 37, 37)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -213,21 +210,21 @@ private void loadGenres() {
                     .addComponent(SearchButton1)
                     .addComponent(GenreFilterCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ClearButton1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 85, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 93, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(38, 38, 38)
+                .addGap(53, 53, 53)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(WatchlistButton)
-                    .addComponent(RateMovieButton)
-                    .addComponent(MarkWatchedButton))
+                    .addComponent(MarkWatchedButton)
+                    .addComponent(FamilyRatingsButton))
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(FamilyRatingsButton)
                     .addComponent(AddCommentButton)
-                    .addComponent(ProgressButton))
+                    .addComponent(ProgressButton)
+                    .addComponent(RateMovieButton))
                 .addGap(18, 18, 18)
                 .addComponent(RefreshButton)
-                .addGap(43, 43, 43))
+                .addGap(28, 28, 28))
         );
 
         pack();
@@ -337,27 +334,45 @@ private void loadGenres() {
     }//GEN-LAST:event_AddCommentButtonActionPerformed
 
     private void ProgressButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProgressButtonActionPerformed
-      try (Connection conn = DatabaseConnection.connect()) {
-
+  try (Connection conn = DatabaseConnection.connect()) {
+        // Total available movies
         PreparedStatement ps1 = conn.prepareStatement(
             "SELECT COUNT(*) as total FROM Movies WHERE ParentalRestriction = FALSE");
         ResultSet rs1 = ps1.executeQuery();
         int total = rs1.next() ? rs1.getInt("total") : 0;
 
-
+        // Your watched count
         PreparedStatement ps2 = conn.prepareStatement(
             "SELECT COUNT(*) as watched FROM UserMovieInteractions " +
             "WHERE UserID = ? AND Watched = TRUE");
         ps2.setInt(1, userId);
         ResultSet rs2 = ps2.executeQuery();
-        int watched = rs2.next() ? rs2.getInt("watched") : 0;
+        int myWatched = rs2.next() ? rs2.getInt("watched") : 0;
 
-        String message =
-            "Total Available Movies : " + total + "\n" +
-            "You Watched            : " + watched + "\n" +
-            "Remaining              : " + (total - watched);
+        // All family members (child users) watched counts
+        PreparedStatement ps3 = conn.prepareStatement(
+            "SELECT u.Username, COUNT(i.InteractionID) as watched " +
+            "FROM Users u " +
+            "LEFT JOIN UserMovieInteractions i ON u.UserId = i.UserID AND i.Watched = TRUE " +
+            "WHERE u.UserType = 2 " +
+            "GROUP BY u.UserId, u.Username " +
+            "ORDER BY watched DESC");
+        ResultSet rs3 = ps3.executeQuery();
 
-        JOptionPane.showMessageDialog(this, message,
+        StringBuilder sb = new StringBuilder();
+        sb.append("Total Available Movies : ").append(total).append("\n");
+        sb.append("You Watched            : ").append(myWatched).append("\n");
+        sb.append("Remaining              : ").append(total - myWatched).append("\n\n");
+        sb.append("--- Family Progress ---\n");
+
+        while (rs3.next()) {
+            sb.append(rs3.getString("Username"))
+              .append(" : ")
+              .append(rs3.getInt("watched"))
+              .append(" watched\n");
+        }
+
+        JOptionPane.showMessageDialog(this, sb.toString(),
                 "My Progress", JOptionPane.INFORMATION_MESSAGE);
 
     } catch (Exception e) {
