@@ -23,12 +23,12 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jScrollPane1" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
-                      <EmptySpace min="0" pref="123" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       <Component id="GenreFilterCombo" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="SearchTextField" min="-2" pref="425" max="-2" attributes="0"/>
@@ -36,32 +36,36 @@
                       <Component id="SearchButton1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="ClearButton1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="97" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="222" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="MarkWatchedButton" min="-2" max="-2" attributes="0"/>
-                  <Component id="RateMovieButton" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" pref="58" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="RefreshButton" min="-2" max="-2" attributes="0"/>
-                  <Component id="AddCommentButton" min="-2" max="-2" attributes="0"/>
-                  <Component id="FamilyRatingsButton" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="4" pref="4" max="-2" attributes="0"/>
-                      <Component id="ProgressButton" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Component id="WatchlistButton" alignment="0" min="-2" max="-2" attributes="0"/>
-              </Group>
+              <EmptySpace min="-2" pref="482" max="-2" attributes="0"/>
+              <Component id="posterLabel" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
+          </Group>
+          <Group type="102" alignment="1" attributes="0">
+              <EmptySpace pref="106" max="32767" attributes="0"/>
+              <Component id="MarkWatchedButton" min="-2" pref="109" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="FamilyRatingsButton" min="-2" pref="109" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="RateMovieButton" min="-2" pref="109" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="AddCommentButton" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="WatchlistButton" min="-2" pref="109" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="AddWatchlistButton" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="RemoveWatchlistButton" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="ProgressButton" min="-2" pref="109" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="RefreshButton" min="-2" pref="109" max="-2" attributes="0"/>
+              <EmptySpace pref="106" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -75,23 +79,27 @@
                   <Component id="GenreFilterCombo" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="ClearButton1" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="93" max="32767" attributes="0"/>
+              <EmptySpace pref="86" max="32767" attributes="0"/>
               <Component id="jScrollPane1" min="-2" pref="275" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="53" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="WatchlistButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="MarkWatchedButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="FamilyRatingsButton" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="AddCommentButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="ProgressButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="RateMovieButton" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Component id="RefreshButton" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="ProgressButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="MarkWatchedButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="RefreshButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="AddWatchlistButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="RemoveWatchlistButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                      <Component id="RateMovieButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="FamilyRatingsButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="AddCommentButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="WatchlistButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+              <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
+              <Component id="posterLabel" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="134" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -107,14 +115,18 @@
         <Component class="javax.swing.JTable" name="jTable1">
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="8" rowCount="4">
-                <Column editable="true" title="ID" type="java.lang.Object"/>
-                <Column editable="true" title="Title" type="java.lang.Object"/>
-                <Column editable="true" title="Genre" type="java.lang.Object"/>
-                <Column editable="true" title="Language" type="java.lang.Object"/>
-                <Column editable="true" title="Release Date" type="java.lang.Object"/>
-                <Column editable="true" title="Rating" type="java.lang.Object"/>
-                <Column editable="true" title="Watched" type="java.lang.Object"/>
+              <Table columnCount="12" rowCount="4">
+                <Column editable="false" title="ID" type="java.lang.Object"/>
+                <Column editable="false" title="Title" type="java.lang.Object"/>
+                <Column editable="false" title="Genre" type="java.lang.Object"/>
+                <Column editable="false" title="Language" type="java.lang.Object"/>
+                <Column editable="false" title="Country" type="java.lang.Object"/>
+                <Column editable="false" title="Release Date" type="java.lang.Object"/>
+                <Column editable="false" title="Rating" type="java.lang.Object"/>
+                <Column editable="false" title="Watched" type="java.lang.Object"/>
+                <Column editable="false" title="Director" type="java.lang.Object"/>
+                <Column editable="false" title="Lead Actor" type="java.lang.Object"/>
+                <Column editable="false" title="Support Actor" type="java.lang.Object"/>
                 <Column editable="true" title="Comments" type="java.lang.Object"/>
               </Table>
             </Property>
@@ -204,6 +216,27 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ClearButton1ActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="posterLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="jLabel1"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="AddWatchlistButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Add  Watchlist"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="AddWatchlistButtonActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="RemoveWatchlistButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Remove Watchlist"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="RemoveWatchlistButtonActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

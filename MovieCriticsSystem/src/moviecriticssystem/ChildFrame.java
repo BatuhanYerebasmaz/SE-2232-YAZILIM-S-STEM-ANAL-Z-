@@ -6,6 +6,9 @@ package moviecriticssystem;
 import javax.swing.table.DefaultTableModel;
 import java.sql.*;
 import javax.swing.JOptionPane;
+import java.awt.Image;
+import java.io.File;
+import javax.swing.ImageIcon;
 /**
  *
  * @author yereb
@@ -19,34 +22,89 @@ public class ChildFrame extends javax.swing.JFrame {
      */
 
 public ChildFrame(int userId) {
-    this.userId = userId; 
+   this.userId = userId; 
     initComponents();
+    
+    posterLabel.setText("No Poster");
+    posterLabel.setPreferredSize(new java.awt.Dimension(150, 200));
+    posterLabel.setBorder(javax.swing.BorderFactory.createLineBorder(java.awt.Color.GRAY));
+    posterLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+    
     loadMovies();
     loadGenres();
+    
+    jTable1.getSelectionModel().addListSelectionListener(e -> {
+        if (!e.getValueIsAdjusting()) {
+            int row = jTable1.getSelectedRow();
+            if (row == -1) return;
+            int movieId = (int) jTable1.getValueAt(row, 0);
+            try (Connection conn = DatabaseConnection.connect()) {
+                PreparedStatement ps = conn.prepareStatement(
+                    "SELECT Poster FROM Movies WHERE MovieID = ?");
+                ps.setInt(1, movieId);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) showPoster(rs.getString("Poster"));
+            } catch (Exception ex) {
+                posterLabel.setText("No Poster");
+            }
+        }
+    });
 }
-
+private void showPoster(String posterPath) {
+    if (posterPath == null || posterPath.isEmpty()) {
+        posterLabel.setIcon(null);
+        posterLabel.setText("No Poster");
+        return;
+    }
+    
+    File file = new File("posters/" + posterPath);
+    if (!file.exists()) {
+        posterLabel.setIcon(null);
+        posterLabel.setText("No Poster");
+        return;
+    }
+    
+    ImageIcon icon = new ImageIcon(file.getAbsolutePath());
+    Image scaled = icon.getImage().getScaledInstance(150, 200, Image.SCALE_SMOOTH);
+    posterLabel.setIcon(new ImageIcon(scaled));
+    posterLabel.setText("");
+}
 private void loadMovies() {
-    DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+      DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
     model.setRowCount(0);
 
-    String sql = "SELECT MovieID, Title, Genre, Language, ReleaseDate, Rating, Watched, Comments FROM Movies WHERE ParentalRestriction = FALSE";
+    String query = 
+        "SELECT m.MovieID, m.Title, m.Genre, m.Language, m.CountryOfOrigin, m.ReleaseDate, " +
+        "m.Rating, m.Watched, " +
+        "CONCAT(d.FirstName, ' ', d.LastName) AS Director, " +
+        "CONCAT(la.FirstName, ' ', la.LastName) AS LeadingActor, " +
+        "CONCAT(sa.FirstName, ' ', sa.LastName) AS SupportingActor, " +
+        "m.Comments " +
+        "FROM Movies m " +
+        "LEFT JOIN Persons d  ON m.DirectorId = d.PersonID " +
+        "LEFT JOIN Persons la ON m.LeadingActorId = la.PersonID " +
+        "LEFT JOIN Persons sa ON m.SupportingActorId = sa.PersonID " +
+        "WHERE m.ParentalRestriction = FALSE";
 
     try (Connection conn = DatabaseConnection.connect();
          Statement stmt = conn.createStatement();
-         ResultSet rs = stmt.executeQuery(sql)) {
+         ResultSet rs = stmt.executeQuery(query)) {
 
         while (rs.next()) {
-            Object[] row = {
+            model.addRow(new Object[]{
                 rs.getInt("MovieID"),
                 rs.getString("Title"),
                 rs.getString("Genre"),
                 rs.getString("Language"),
+                rs.getString("CountryOfOrigin"),
                 rs.getDate("ReleaseDate"),
                 rs.getInt("Rating"),
                 rs.getBoolean("Watched"),
+                rs.getString("Director"),
+                rs.getString("LeadingActor"),
+                rs.getString("SupportingActor"),
                 rs.getString("Comments")
-            };
-            model.addRow(row);
+            });
         }
     } catch (Exception e) {
         JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
@@ -121,20 +179,31 @@ private void loadGenres() {
         SearchTextField = new javax.swing.JTextField();
         SearchButton1 = new javax.swing.JButton();
         ClearButton1 = new javax.swing.JButton();
+        posterLabel = new javax.swing.JLabel();
+        AddWatchlistButton = new javax.swing.JButton();
+        RemoveWatchlistButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Title", "Genre", "Language", "Release Date", "Rating", "Watched", "Comments"
+                "ID", "Title", "Genre", "Language", "Country", "Release Date", "Rating", "Watched", "Director", "Lead Actor", "Support Actor", "Comments"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false, false, false, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         MarkWatchedButton.setText("Mark Watched");
@@ -164,6 +233,14 @@ private void loadGenres() {
         ClearButton1.setText("Clear");
         ClearButton1.addActionListener(this::ClearButton1ActionPerformed);
 
+        posterLabel.setText("jLabel1");
+
+        AddWatchlistButton.setText("Add  Watchlist");
+        AddWatchlistButton.addActionListener(this::AddWatchlistButtonActionPerformed);
+
+        RemoveWatchlistButton.setText("Remove Watchlist");
+        RemoveWatchlistButton.addActionListener(this::RemoveWatchlistButtonActionPerformed);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -173,7 +250,7 @@ private void loadGenres() {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 123, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(GenreFilterCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(SearchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 425, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -181,25 +258,32 @@ private void loadGenres() {
                         .addComponent(SearchButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(ClearButton1)
-                        .addGap(0, 97, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addGap(222, 222, 222)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(MarkWatchedButton)
-                    .addComponent(RateMovieButton))
-                .addGap(58, 58, 58)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(RefreshButton)
-                    .addComponent(AddCommentButton)
-                    .addComponent(FamilyRatingsButton))
-                .addGap(37, 37, 37)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(4, 4, 4)
-                        .addComponent(ProgressButton))
-                    .addComponent(WatchlistButton))
+                .addGap(482, 482, 482)
+                .addComponent(posterLabel)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(106, Short.MAX_VALUE)
+                .addComponent(MarkWatchedButton, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(FamilyRatingsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(RateMovieButton, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(AddCommentButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(WatchlistButton, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(AddWatchlistButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(RemoveWatchlistButton)
+                .addGap(18, 18, 18)
+                .addComponent(ProgressButton, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(RefreshButton, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(106, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -210,21 +294,24 @@ private void loadGenres() {
                     .addComponent(SearchButton1)
                     .addComponent(GenreFilterCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ClearButton1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 93, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 86, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(53, 53, 53)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(WatchlistButton)
-                    .addComponent(MarkWatchedButton)
-                    .addComponent(FamilyRatingsButton))
-                .addGap(10, 10, 10)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(AddCommentButton)
-                    .addComponent(ProgressButton)
-                    .addComponent(RateMovieButton))
                 .addGap(18, 18, 18)
-                .addComponent(RefreshButton)
-                .addGap(28, 28, 28))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(ProgressButton)
+                        .addComponent(MarkWatchedButton)
+                        .addComponent(RefreshButton)
+                        .addComponent(AddWatchlistButton)
+                        .addComponent(RemoveWatchlistButton))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(RateMovieButton)
+                        .addComponent(FamilyRatingsButton)
+                        .addComponent(AddCommentButton)
+                        .addComponent(WatchlistButton)))
+                .addGap(47, 47, 47)
+                .addComponent(posterLabel)
+                .addGap(134, 134, 134))
         );
 
         pack();
@@ -379,7 +466,9 @@ private void loadGenres() {
         JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
     }
     }//GEN-LAST:event_ProgressButtonActionPerformed
-
+    
+    
+    
     private void FamilyRatingsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FamilyRatingsButtonActionPerformed
        int row = jTable1.getSelectedRow();
     if (row == -1) {
@@ -421,22 +510,17 @@ private void loadGenres() {
     }//GEN-LAST:event_RefreshButtonActionPerformed
 
     private void WatchlistButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_WatchlistButtonActionPerformed
-         try (Connection conn = DatabaseConnection.connect()) {
-        String sql = """
-            SELECT m.Title, m.Genre, m.Rating
-            FROM Movies m
-            WHERE m.ParentalRestriction = FALSE
-            AND m.MovieID NOT IN (
-                SELECT MovieID FROM UserMovieInteractions
-                WHERE UserID = ? AND Watched = TRUE
-            )
-            ORDER BY m.Title
-        """;
-        PreparedStatement ps = conn.prepareStatement(sql);
+       try (Connection conn = DatabaseConnection.connect()) {
+        PreparedStatement ps = conn.prepareStatement(
+            "SELECT m.Title, m.Genre, m.Rating " +
+            "FROM Movies m " +
+            "JOIN UserMovieInteractions i ON m.MovieID = i.MovieID " +
+            "WHERE i.UserID = ? AND i.Watchlist = TRUE " +
+            "ORDER BY m.Title");
         ps.setInt(1, userId);
         ResultSet rs = ps.executeQuery();
 
-        StringBuilder sb = new StringBuilder("My Watchlist (Not Watched Yet):\n\n");
+        StringBuilder sb = new StringBuilder("My Watchlist:\n\n");
         boolean hasMovies = false;
         while (rs.next()) {
             sb.append("• ").append(rs.getString("Title"))
@@ -444,7 +528,7 @@ private void loadGenres() {
               .append(" - Rating: ").append(rs.getInt("Rating")).append("/10\n");
             hasMovies = true;
         }
-        if (!hasMovies) sb.append("You've watched everything! 🎉");
+        if (!hasMovies) sb.append("Your watchlist is empty!");
 
         JOptionPane.showMessageDialog(this, sb.toString(),
                 "My Watchlist", JOptionPane.INFORMATION_MESSAGE);
@@ -453,6 +537,28 @@ private void loadGenres() {
         JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
     }
     }//GEN-LAST:event_WatchlistButtonActionPerformed
+
+    private void RemoveWatchlistButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RemoveWatchlistButtonActionPerformed
+        int row = jTable1.getSelectedRow();
+    if (row == -1) {
+        JOptionPane.showMessageDialog(this, "Select a movie first!");
+        return;
+    }
+    int movieId = (int) jTable1.getValueAt(row, 0);
+    upsertInteraction(movieId, "Watchlist", false);
+    JOptionPane.showMessageDialog(this, "Removed from watchlist!");
+    }//GEN-LAST:event_RemoveWatchlistButtonActionPerformed
+
+    private void AddWatchlistButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddWatchlistButtonActionPerformed
+          int row = jTable1.getSelectedRow();
+    if (row == -1) {
+        JOptionPane.showMessageDialog(this, "Select a movie first!");
+        return;
+    }
+    int movieId = (int) jTable1.getValueAt(row, 0);
+    upsertInteraction(movieId, "Watchlist", true);
+    JOptionPane.showMessageDialog(this, "Added to watchlist!");
+    }//GEN-LAST:event_AddWatchlistButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -481,6 +587,7 @@ private void loadGenres() {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AddCommentButton;
+    private javax.swing.JButton AddWatchlistButton;
     private javax.swing.JButton ClearButton1;
     private javax.swing.JButton FamilyRatingsButton;
     private javax.swing.JComboBox<String> GenreFilterCombo;
@@ -488,10 +595,12 @@ private void loadGenres() {
     private javax.swing.JButton ProgressButton;
     private javax.swing.JButton RateMovieButton;
     private javax.swing.JButton RefreshButton;
+    private javax.swing.JButton RemoveWatchlistButton;
     private javax.swing.JButton SearchButton1;
     private javax.swing.JTextField SearchTextField;
     private javax.swing.JButton WatchlistButton;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JLabel posterLabel;
     // End of variables declaration//GEN-END:variables
 }

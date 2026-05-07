@@ -7,6 +7,9 @@ package moviecriticssystem;
 import javax.swing.table.DefaultTableModel;
 import java.sql.*;
 import javax.swing.JOptionPane;
+import java.awt.Image;
+import java.io.File;
+import javax.swing.ImageIcon;
 /**
  *
  * @author yereb
@@ -19,10 +22,53 @@ public class AdultFrame extends javax.swing.JFrame {
      * Creates new form MainFrame
      */
     public AdultFrame(int userId) {
-        initComponents();
-        loadMovies();
-        loadGenres();
+         initComponents();
+    
+    posterLabel.setText("No Poster");
+    posterLabel.setPreferredSize(new java.awt.Dimension(150, 200));
+    posterLabel.setBorder(javax.swing.BorderFactory.createLineBorder(java.awt.Color.GRAY));
+    posterLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+    
+    loadMovies();
+    loadGenres();
+    
+    jTable1.getSelectionModel().addListSelectionListener(e -> {
+        if (!e.getValueIsAdjusting()) {
+            int row = jTable1.getSelectedRow();
+            if (row == -1) return;
+            int movieId = (int) jTable1.getValueAt(row, 0);
+            try (Connection conn = DatabaseConnection.connect()) {
+                PreparedStatement ps = conn.prepareStatement(
+                    "SELECT Poster FROM Movies WHERE MovieID = ?");
+                ps.setInt(1, movieId);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) showPoster(rs.getString("Poster"));
+            } catch (Exception ex) {
+                posterLabel.setText("No Poster");
+            }
+        }
+    });
     }
+    
+    private void showPoster(String posterPath) {
+    if (posterPath == null || posterPath.isEmpty()) {
+        posterLabel.setIcon(null);
+        posterLabel.setText("No Poster");
+        return;
+    }
+    
+    File file = new File("posters/" + posterPath);
+    if (!file.exists()) {
+        posterLabel.setIcon(null);
+        posterLabel.setText("No Poster");
+        return;
+    }
+    
+    ImageIcon icon = new ImageIcon(file.getAbsolutePath());
+    Image scaled = icon.getImage().getScaledInstance(150, 200, Image.SCALE_SMOOTH);
+    posterLabel.setIcon(new ImageIcon(scaled));
+    posterLabel.setText("");
+}
     
     private void loadGenres() {
     GenreFilterCombo.addItem("All");
@@ -42,25 +88,38 @@ public class AdultFrame extends javax.swing.JFrame {
      DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
     model.setRowCount(0);
 
-    String query = "SELECT MovieID, Title, Genre, Language, ReleaseDate, Rating, Watched, ParentalRestriction, Comments FROM Movies";
+    String query = 
+        "SELECT m.MovieID, m.Title, m.Genre, m.Language, m.CountryOfOrigin, m.ReleaseDate, " +
+        "m.Rating, m.Watched, m.ParentalRestriction, " +
+        "CONCAT(d.FirstName, ' ', d.LastName) AS Director, " +
+        "CONCAT(la.FirstName, ' ', la.LastName) AS LeadingActor, " +
+        "CONCAT(sa.FirstName, ' ', sa.LastName) AS SupportingActor, " +
+        "m.Comments " +
+        "FROM Movies m " +
+        "LEFT JOIN Persons d  ON m.DirectorId = d.PersonID " +
+        "LEFT JOIN Persons la ON m.LeadingActorId = la.PersonID " +
+        "LEFT JOIN Persons sa ON m.SupportingActorId = sa.PersonID";
 
     try (Connection conn = DatabaseConnection.connect();
          Statement stmt = conn.createStatement();
          ResultSet rs = stmt.executeQuery(query)) {
 
         while (rs.next()) {
-            Object[] row = {
+            model.addRow(new Object[]{
                 rs.getInt("MovieID"),
                 rs.getString("Title"),
                 rs.getString("Genre"),
                 rs.getString("Language"),
+                rs.getString("CountryOfOrigin"),
                 rs.getDate("ReleaseDate"),
                 rs.getInt("Rating"),
                 rs.getBoolean("Watched"),
                 rs.getBoolean("ParentalRestriction"),
+                rs.getString("Director"),
+                rs.getString("LeadingActor"),
+                rs.getString("SupportingActor"),
                 rs.getString("Comments")
-            };
-            model.addRow(row);
+            });
         }
     } catch (Exception e) {
         JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
@@ -91,22 +150,23 @@ public class AdultFrame extends javax.swing.JFrame {
         GenreFilterCombo = new javax.swing.JComboBox<>();
         ClearButton = new javax.swing.JButton();
         ViewFamilyRatingsButton = new javax.swing.JButton();
+        posterLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Title", "Genre", "Language", "Release Date", "Rating", "Watched", "Restriction", "Comments"
+                "ID", "Title", "Genre", "Language", "Country", "Release Date", "Rating", "Watched", "Restriction", "Director", "Lead Actor", "Support Actor", "Comments"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, true, true
+                false, false, false, false, false, false, false, false, false, false, false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -153,40 +213,14 @@ public class AdultFrame extends javax.swing.JFrame {
         ViewFamilyRatingsButton.setText("View Family Ratings");
         ViewFamilyRatingsButton.addActionListener(this::ViewFamilyRatingsButtonActionPerformed);
 
+        posterLabel.setText("jLabel1");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addContainerGap(146, Short.MAX_VALUE)
-                                .addComponent(ManageUsersButton)
-                                .addGap(18, 18, 18)
-                                .addComponent(ViewFamilyRatingsButton)
-                                .addGap(18, 18, 18)
-                                .addComponent(AnalyticsButton)
-                                .addGap(18, 18, 18)
-                                .addComponent(ModerateContentButton))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(192, 192, 192)
-                                .addComponent(AddMovieButton)
-                                .addGap(12, 12, 12)
-                                .addComponent(DeleteMovieButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(EdditMovieButton)
-                                .addGap(18, 18, 18)
-                                .addComponent(SetRestrictionButton)
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addGap(0, 145, Short.MAX_VALUE)))
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(352, Short.MAX_VALUE)
                 .addComponent(GenreFilterCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(SearchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 425, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -194,10 +228,34 @@ public class AdultFrame extends javax.swing.JFrame {
                 .addComponent(SearchButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(ClearButton)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(352, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1)
+                .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(RefreshButton)
+                .addComponent(RefreshButton, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(SetRestrictionButton, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(AnalyticsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(AddMovieButton, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(ManageUsersButton, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(ViewFamilyRatingsButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(DeleteMovieButton, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(ModerateContentButton, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(EdditMovieButton, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(548, 548, 548)
+                .addComponent(posterLabel)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -211,21 +269,20 @@ public class AdultFrame extends javax.swing.JFrame {
                     .addComponent(ClearButton))
                 .addGap(65, 65, 65)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 86, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ManageUsersButton)
+                    .addComponent(EdditMovieButton)
                     .addComponent(ModerateContentButton)
-                    .addComponent(ViewFamilyRatingsButton)
-                    .addComponent(AnalyticsButton))
-                .addGap(23, 23, 23)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(SetRestrictionButton)
-                    .addComponent(AddMovieButton)
                     .addComponent(DeleteMovieButton)
-                    .addComponent(EdditMovieButton))
-                .addGap(14, 14, 14)
-                .addComponent(RefreshButton)
-                .addGap(14, 14, 14))
+                    .addComponent(ViewFamilyRatingsButton)
+                    .addComponent(ManageUsersButton)
+                    .addComponent(AddMovieButton)
+                    .addComponent(AnalyticsButton)
+                    .addComponent(RefreshButton))
+                .addGap(54, 54, 54)
+                .addComponent(posterLabel)
+                .addContainerGap(198, Short.MAX_VALUE))
         );
 
         pack();
@@ -520,5 +577,6 @@ public class AdultFrame extends javax.swing.JFrame {
     private javax.swing.JButton ViewFamilyRatingsButton;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JLabel posterLabel;
     // End of variables declaration//GEN-END:variables
 }

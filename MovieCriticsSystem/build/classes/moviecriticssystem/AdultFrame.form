@@ -24,42 +24,7 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jScrollPane1" max="32767" attributes="0"/>
-                  </Group>
-                  <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace pref="146" max="32767" attributes="0"/>
-                              <Component id="ManageUsersButton" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="ViewFamilyRatingsButton" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="AnalyticsButton" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="ModerateContentButton" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" attributes="0">
-                              <EmptySpace min="-2" pref="192" max="-2" attributes="0"/>
-                              <Component id="AddMovieButton" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                              <Component id="DeleteMovieButton" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="EdditMovieButton" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="SetRestrictionButton" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                          </Group>
-                      </Group>
-                      <EmptySpace min="0" pref="145" max="32767" attributes="0"/>
-                  </Group>
-              </Group>
-              <EmptySpace max="-2" attributes="0"/>
-          </Group>
-          <Group type="102" attributes="0">
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace pref="352" max="32767" attributes="0"/>
               <Component id="GenreFilterCombo" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="SearchTextField" min="-2" pref="425" max="-2" attributes="0"/>
@@ -67,11 +32,37 @@
               <Component id="SearchButton" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="ClearButton" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace pref="352" max="32767" attributes="0"/>
+          </Group>
+          <Group type="102" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jScrollPane1" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace max="32767" attributes="0"/>
-              <Component id="RefreshButton" min="-2" max="-2" attributes="0"/>
+              <Component id="RefreshButton" min="-2" pref="135" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="SetRestrictionButton" min="-2" pref="135" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="AnalyticsButton" min="-2" pref="135" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="AddMovieButton" min="-2" pref="135" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="ManageUsersButton" min="-2" pref="135" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="ViewFamilyRatingsButton" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="DeleteMovieButton" min="-2" pref="135" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="ModerateContentButton" min="-2" pref="135" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="EdditMovieButton" min="-2" pref="135" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
+          </Group>
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="548" max="-2" attributes="0"/>
+              <Component id="posterLabel" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -88,23 +79,21 @@
               </Group>
               <EmptySpace min="-2" pref="65" max="-2" attributes="0"/>
               <Component id="jScrollPane1" min="-2" pref="204" max="-2" attributes="0"/>
-              <EmptySpace pref="86" max="32767" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="ManageUsersButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="ModerateContentButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="ViewFamilyRatingsButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="AnalyticsButton" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="SetRestrictionButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="AddMovieButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="DeleteMovieButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="EdditMovieButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="ModerateContentButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="SetRestrictionButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="DeleteMovieButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="ViewFamilyRatingsButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="ManageUsersButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="AddMovieButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="AnalyticsButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="RefreshButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
-              <Component id="RefreshButton" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="54" max="-2" attributes="0"/>
+              <Component id="posterLabel" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="198" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -120,15 +109,19 @@
         <Component class="javax.swing.JTable" name="jTable1">
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="9" rowCount="4">
+              <Table columnCount="13" rowCount="4">
                 <Column editable="false" title="ID" type="java.lang.Object"/>
                 <Column editable="false" title="Title" type="java.lang.Object"/>
                 <Column editable="false" title="Genre" type="java.lang.Object"/>
                 <Column editable="false" title="Language" type="java.lang.Object"/>
+                <Column editable="false" title="Country" type="java.lang.Object"/>
                 <Column editable="false" title="Release Date" type="java.lang.Object"/>
                 <Column editable="false" title="Rating" type="java.lang.Object"/>
                 <Column editable="false" title="Watched" type="java.lang.Object"/>
-                <Column editable="true" title="Restriction" type="java.lang.Object"/>
+                <Column editable="false" title="Restriction" type="java.lang.Object"/>
+                <Column editable="false" title="Director" type="java.lang.Object"/>
+                <Column editable="false" title="Lead Actor" type="java.lang.Object"/>
+                <Column editable="false" title="Support Actor" type="java.lang.Object"/>
                 <Column editable="true" title="Comments" type="java.lang.Object"/>
               </Table>
             </Property>
@@ -287,6 +280,11 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ViewFamilyRatingsButtonActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="posterLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="jLabel1"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>
