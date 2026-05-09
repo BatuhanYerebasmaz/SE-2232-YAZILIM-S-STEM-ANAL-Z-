@@ -392,17 +392,23 @@ public class AdultFrame extends javax.swing.JFrame {
         if (rs1.next()) total = rs1.getInt("total");
 
 
-        ResultSet rs2 = stmt.executeQuery("SELECT COUNT(*) as watched FROM Movies WHERE Watched = TRUE");
+        ResultSet rs2 = stmt.executeQuery("SELECT COUNT(DISTINCT MovieID) as watched FROM UserMovieInteractions WHERE Watched = TRUE");
         int watched = 0;
         if (rs2.next()) watched = rs2.getInt("watched");
 
 
-        ResultSet rs3 = stmt.executeQuery("SELECT AVG(Rating) as avg FROM Movies");
+        ResultSet rs3 = stmt.executeQuery("SELECT AVG(Rating) as avg FROM UserMovieInteractions WHERE Rating IS NOT NULL");
         double avg = 0;
         if (rs3.next()) avg = rs3.getDouble("avg");
 
 
-        ResultSet rs4 = stmt.executeQuery("SELECT Title, Rating FROM Movies ORDER BY Rating DESC LIMIT 1");
+        ResultSet rs4 = stmt.executeQuery(
+        "SELECT m.Title, AVG(i.Rating) as Rating " +
+        "FROM UserMovieInteractions i " +
+        "JOIN Movies m ON i.MovieID = m.MovieID " +
+        "WHERE i.Rating IS NOT NULL " +
+        "GROUP BY m.MovieID, m.Title " +
+        "ORDER BY AVG(i.Rating) DESC LIMIT 1");
         String topTitle = "-";
         int topRating = 0;
         if (rs4.next()) {
@@ -426,14 +432,25 @@ public class AdultFrame extends javax.swing.JFrame {
     DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
     model.setRowCount(0);
 
-    String sql = "SELECT MovieID, Title, Genre, Language, ReleaseDate, Rating, Watched, ParentalRestriction, Comments FROM Movies WHERE 1=1";
+    String sql = "SELECT m.MovieID, m.Title, m.Genre, m.Language, m.CountryOfOrigin, m.ReleaseDate, " +
+    "m.Rating, m.Watched, m.ParentalRestriction, " +
+    "CONCAT(d.FirstName,' ',d.LastName) AS Director, " +
+    "CONCAT(la.FirstName,' ',la.LastName) AS LeadingActor, " +
+    "CONCAT(sa.FirstName,' ',sa.LastName) AS SupportingActor, " +
+    "m.Comments " +
+    "FROM Movies m " +
+    "LEFT JOIN Persons d ON m.DirectorId = d.PersonID " +
+    "LEFT JOIN Persons la ON m.LeadingActorId = la.PersonID " +
+    "LEFT JOIN Persons sa ON m.SupportingActorId = sa.PersonID WHERE 1=1";
 
     if (!keyword.isEmpty()) {
-        sql += " AND (Title LIKE '%" + keyword + "%' OR Language LIKE '%" + keyword + "%')";
+    sql += " AND (m.Title LIKE '%" + keyword + "%' OR m.Language LIKE '%" + keyword + "%' " +
+           "OR CONCAT(d.FirstName,' ',d.LastName) LIKE '%" + keyword + "%' " +
+           "OR YEAR(m.ReleaseDate) LIKE '%" + keyword + "%')";
     }
 
     if (genre != null && !genre.equals("All")) {
-        sql += " AND Genre = '" + genre + "'";
+        sql += " AND m.Genre = '" + genre + "'";
     }
 
     try (Connection conn = DatabaseConnection.connect();
@@ -442,14 +459,10 @@ public class AdultFrame extends javax.swing.JFrame {
 
         while (rs.next()) {
             Object[] row = {
-                rs.getInt("MovieID"),
-                rs.getString("Title"),
-                rs.getString("Genre"),
-                rs.getString("Language"),
-                rs.getDate("ReleaseDate"),
-                rs.getInt("Rating"),
-                rs.getBoolean("Watched"),
-                rs.getBoolean("ParentalRestriction"),
+                rs.getInt("MovieID"), rs.getString("Title"), rs.getString("Genre"),
+                rs.getString("Language"), rs.getString("CountryOfOrigin"), rs.getDate("ReleaseDate"),
+                rs.getInt("Rating"), rs.getBoolean("Watched"), rs.getBoolean("ParentalRestriction"),
+                rs.getString("Director"), rs.getString("LeadingActor"), rs.getString("SupportingActor"),
                 rs.getString("Comments")
             };
             model.addRow(row);

@@ -40,7 +40,7 @@ private void loadInteractions() {
                  "FROM UserMovieInteractions i " +
                  "JOIN Users u ON i.UserID = u.UserId " +
                  "JOIN Movies m ON i.MovieID = m.MovieID " +
-                 "ORDER BY FIELD(i.Status,'unapproved','approved','rejected')";
+                 "ORDER BY FIELD(i.Status,'pending','approved','rejected')";
 
     try (java.sql.Connection conn = DatabaseConnection.connect();
          java.sql.Statement stmt = conn.createStatement();
@@ -64,7 +64,7 @@ private void loadInteractions() {
 private void updateStatus(String newStatus) {
     int row = jTable1.getSelectedRow();
     if (row == -1) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Önce bir satır seçin!");
+        javax.swing.JOptionPane.showMessageDialog(this, "Please select a row first!");
         return;
     }
 
@@ -77,7 +77,7 @@ private void updateStatus(String newStatus) {
         ps.setInt(2, interactionId);
         ps.executeUpdate();
 
-        javax.swing.JOptionPane.showMessageDialog(this, newStatus.toUpperCase() + " yapıldı!");
+        javax.swing.JOptionPane.showMessageDialog(this, "Status updated to: " + newStatus.toUpperCase());
         loadInteractions();
     } catch (Exception e) {
         javax.swing.JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
