@@ -60,6 +60,7 @@ CREATE TABLE UserMovieInteractions (
     Comment       TEXT,
     Watched       BOOLEAN DEFAULT FALSE,
     Watchlist BOOLEAN DEFAULT FALSE,
+    Status VARCHAR(20) NOT NULL DEFAULT 'unapproved',
     FOREIGN KEY (UserID)  REFERENCES Users(UserId),
     FOREIGN KEY (MovieID) REFERENCES Movies(MovieID),
     UNIQUE KEY uq_user_movie (UserID, MovieID) 
@@ -91,10 +92,10 @@ INSERT INTO Users (UserId, Username, Password, UserType, Email) VALUES
 (5, 'kuzen_Murt', 'ali12345', 2, 'Kuzen@email.com');
 
 -- UserMovieInteractions
-INSERT INTO UserMovieInteractions (UserID, MovieID, Rating, Comment, Watched) VALUES
-(2, 101, 9, 'Inception was brilliant, would watch again.', TRUE),
-(3, 101, 7, 'Hard to follow but very good.', TRUE),
-(2, 105, 10, 'Best Batman film by far.', TRUE),
-(3, 105, 8, 'The Joker character was incredible.', FALSE),
-(5, 101, 8, 'Very layered story, loved it.', TRUE),
-(5, 105, 9, 'Great action sequences throughout.', TRUE);
+INSERT INTO UserMovieInteractions (UserID, MovieID, Rating, Comment, Watched, Status) VALUES
+(2, 101, 9, 'Inception was brilliant, would watch again.', TRUE, 'unapproved'),
+(3, 101, 7, 'Hard to follow but very good.', TRUE, 'approved'),
+(2, 105, 10, 'Best Batman film by far.', TRUE, 'approved'),
+(3, 105, 8, 'The Joker character was incredible.', FALSE, 'approved'),
+(5, 101, 8, 'Very layered story, loved it.', TRUE, 'approved'),
+(5, 105, 9, 'Great action sequences throughout.', TRUE, 'approved');

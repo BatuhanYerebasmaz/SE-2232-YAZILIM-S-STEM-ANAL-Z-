@@ -376,44 +376,9 @@ public class AdultFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_ManageUsersButtonActionPerformed
 
     private void ModerateContentButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModerateContentButtonActionPerformed
-         int row = jTable1.getSelectedRow();
-    if (row == -1) {
-        JOptionPane.showMessageDialog(this, "Select a movie first!");
-        return;
-    }
-
-    int movieId = (int) jTable1.getValueAt(row, 0);
-    String movieTitle = (String) jTable1.getValueAt(row, 1);
-
-    String[] options = {"Remove Comment", "Remove Rating", "Remove Both", "Cancel"};
-    int choice = JOptionPane.showOptionDialog(this,
-        "What do you want to moderate for: " + movieTitle,
-        "Moderate Content",
-        JOptionPane.DEFAULT_OPTION,
-        JOptionPane.WARNING_MESSAGE,
-        null, options, options[0]);
-
-    if (choice == 3 || choice == -1) return;
-
-    String sql;
-    if (choice == 0) {
-        sql = "UPDATE Movies SET Comments = NULL WHERE MovieID = ?";
-    } else if (choice == 1) {
-        sql = "UPDATE Movies SET Rating = 0 WHERE MovieID = ?";
-    } else {
-        sql = "UPDATE Movies SET Comments = NULL, Rating = 0 WHERE MovieID = ?";
-    }
-
-    try (Connection conn = DatabaseConnection.connect()) {
-        PreparedStatement ps = conn.prepareStatement(sql);
-        ps.setInt(1, movieId);
-        ps.executeUpdate();
-
-        JOptionPane.showMessageDialog(this, "Done!");
-        loadMovies();
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
-    }
+    this.setEnabled(false);
+    ModerationFrame form = new ModerationFrame(this);
+    form.setVisible(true);
     }//GEN-LAST:event_ModerateContentButtonActionPerformed
 
     private void AnalyticsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AnalyticsButtonActionPerformed
@@ -515,7 +480,7 @@ public class AdultFrame extends javax.swing.JFrame {
             "SELECT u.Username, i.Rating, i.Comment " +
             "FROM UserMovieInteractions i " +
             "JOIN Users u ON i.UserID = u.UserId " +
-            "WHERE i.MovieID = ?");
+            "WHERE i.MovieID = ? AND i.Status = 'approved'");
         ps.setInt(1, movieId);
         ResultSet rs = ps.executeQuery();
 

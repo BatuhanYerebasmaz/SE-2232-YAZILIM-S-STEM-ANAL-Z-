@@ -122,7 +122,7 @@ private void upsertInteraction(int movieId, String field, Object value) {
 
         if (rs.next()) {
             PreparedStatement upd = conn.prepareStatement(
-                "UPDATE UserMovieInteractions SET " + field + "=? WHERE UserID=? AND MovieID=?");
+                "UPDATE UserMovieInteractions SET " + field + "=?, Status='pending' WHERE UserID=? AND MovieID=?");
             if (value instanceof Integer) upd.setInt(1, (Integer) value);
             else if (value instanceof Boolean) upd.setBoolean(1, (Boolean) value);
             else upd.setString(1, (String) value);
@@ -131,7 +131,7 @@ private void upsertInteraction(int movieId, String field, Object value) {
             upd.executeUpdate();
         } else {
             PreparedStatement ins = conn.prepareStatement(
-                "INSERT INTO UserMovieInteractions (UserID, MovieID, " + field + ") VALUES (?,?,?)");
+                "INSERT INTO UserMovieInteractions (UserID, MovieID, " + field + ", Status) VALUES (?,?,?,'pending')");
             ins.setInt(1, userId);
             ins.setInt(2, movieId);
             if (value instanceof Integer) ins.setInt(3, (Integer) value);
@@ -484,7 +484,7 @@ private void loadGenres() {
             "SELECT u.Username, i.Rating, i.Comment " +
             "FROM UserMovieInteractions i " +
             "JOIN Users u ON i.UserID = u.UserId " +
-            "WHERE i.MovieID = ?");
+            "WHERE i.MovieID = ? AND i.Status = 'approved'");
         ps.setInt(1, movieId);
         ResultSet rs = ps.executeQuery();
 
