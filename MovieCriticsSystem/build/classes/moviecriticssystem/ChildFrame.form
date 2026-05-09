@@ -47,10 +47,10 @@
               <EmptySpace max="32767" attributes="0"/>
           </Group>
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace pref="106" max="32767" attributes="0"/>
+              <EmptySpace pref="121" max="32767" attributes="0"/>
               <Component id="MarkWatchedButton" min="-2" pref="109" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="FamilyRatingsButton" min="-2" pref="109" max="-2" attributes="0"/>
+              <Component id="ProgressButton" min="-2" pref="109" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="RateMovieButton" min="-2" pref="109" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
@@ -59,13 +59,13 @@
               <Component id="WatchlistButton" min="-2" pref="109" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="AddWatchlistButton" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Component id="RemoveWatchlistButton" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Component id="ProgressButton" min="-2" pref="109" max="-2" attributes="0"/>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="FamilyRatingsButton" min="-2" pref="109" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Component id="RefreshButton" min="-2" pref="109" max="-2" attributes="0"/>
-              <EmptySpace pref="106" max="32767" attributes="0"/>
+              <EmptySpace pref="121" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -84,15 +84,15 @@
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="ProgressButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="MarkWatchedButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="RefreshButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="AddWatchlistButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="RemoveWatchlistButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="FamilyRatingsButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="ProgressButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                       <Component id="RateMovieButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="FamilyRatingsButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="AddCommentButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="WatchlistButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>

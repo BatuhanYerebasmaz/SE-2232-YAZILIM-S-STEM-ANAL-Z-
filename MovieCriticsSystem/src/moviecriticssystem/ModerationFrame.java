@@ -19,7 +19,6 @@ private java.awt.Frame parentFrame;
 
 public ModerationFrame(java.awt.Frame parent) {
     initComponents();
-    setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     this.parentFrame = parent;
     loadInteractions();
     addWindowListener(new java.awt.event.WindowAdapter() {

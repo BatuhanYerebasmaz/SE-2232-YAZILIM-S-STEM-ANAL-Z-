@@ -56,7 +56,7 @@ public EdditMovieForm(int movieId, java.awt.Frame parent) {
         JOptionPane.showMessageDialog(this, "Error loading persons: " + e.getMessage());
     }
 }
-       private Integer getSelectedPersonId(javax.swing.JComboBox<String> combo) {
+private Integer getSelectedPersonId(javax.swing.JComboBox<String> combo) {
     String selected = (String) combo.getSelectedItem();
     if (selected == null || selected.startsWith("--")) return null;
     try {
