@@ -408,7 +408,7 @@ private void loadGenres() {
     }
 
     upsertInteraction(movieId, "Rating", score);
-    JOptionPane.showMessageDialog(this, "Rating saved!");
+    JOptionPane.showMessageDialog(this, "Rating pending approval");
     loadMovies();
     }//GEN-LAST:event_RateMovieButtonActionPerformed
 
@@ -425,7 +425,7 @@ private void loadGenres() {
     if (comment == null || comment.trim().isEmpty()) return;
 
         upsertInteraction(movieId, "Comment", comment.trim());
-        JOptionPane.showMessageDialog(this, "Comment added!");
+        JOptionPane.showMessageDialog(this, "Comment pending approval");
         loadMovies();   
     }//GEN-LAST:event_AddCommentButtonActionPerformed
 
