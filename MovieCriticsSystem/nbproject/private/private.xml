@@ -3,15 +3,17 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/osm/Documents/School/SE2232/SE-2232-YAZILIM-S-STEM-ANAL-Z-/MovieCriticsSystem/src/moviecriticssystem/ChildFrame.java</file>
-            <file>file:/home/osm/Documents/School/SE2232/SE-2232-YAZILIM-S-STEM-ANAL-Z-/MovieCriticsSystem/src/moviecriticssystem/Movie.java</file>
-            <file>file:/home/osm/Documents/School/SE2232/SE-2232-YAZILIM-S-STEM-ANAL-Z-/MovieCriticsSystem/src/moviecriticssystem/LoginPage.java</file>
-            <file>file:/home/osm/Documents/School/SE2232/SE-2232-YAZILIM-S-STEM-ANAL-Z-/MovieCriticsSystem/src/moviecriticssystem/ManageUsersFrame.java</file>
-            <file>file:/home/osm/Documents/School/SE2232/SE-2232-YAZILIM-S-STEM-ANAL-Z-/MovieCriticsSystem/src/moviecriticssystem/AdultFrame.java</file>
-            <file>file:/home/osm/Documents/School/SE2232/SE-2232-YAZILIM-S-STEM-ANAL-Z-/MovieCriticsSystem/src/moviecriticssystem/ModerationFrame.java</file>
-            <file>file:/home/osm/Documents/School/SE2232/SE-2232-YAZILIM-S-STEM-ANAL-Z-/MovieCriticsSystem/src/moviecriticssystem/Theme.java</file>
-            <file>file:/home/osm/Documents/School/SE2232/SE-2232-YAZILIM-S-STEM-ANAL-Z-/MovieCriticsSystem/src/moviecriticssystem/EditMovieForm.java</file>
-            <file>file:/home/osm/Documents/School/SE2232/SE-2232-YAZILIM-S-STEM-ANAL-Z-/MovieCriticsSystem/src/moviecriticssystem/AddMovieForm.java</file>
+            <file>file:/C:/Users/yereb/OneDrive/Belgeler/GitHub/SE-2232-YAZILIM-S-STEM-ANAL-Z-/MovieCriticsSystem/src/moviecriticssystem/EditMovieForm.java</file>
+            <file>file:/C:/Users/yereb/OneDrive/Belgeler/GitHub/SE-2232-YAZILIM-S-STEM-ANAL-Z-/MovieCriticsSystem/src/moviecriticssystem/LoginPage.java</file>
+            <file>file:/C:/Users/yereb/OneDrive/Belgeler/GitHub/SE-2232-YAZILIM-S-STEM-ANAL-Z-/MovieCriticsSystem/src/moviecriticssystem/ModerationFrame.java</file>
+            <file>file:/C:/Users/yereb/OneDrive/Belgeler/GitHub/SE-2232-YAZILIM-S-STEM-ANAL-Z-/MovieCriticsSystem/src/moviecriticssystem/Movie.java</file>
+            <file>file:/C:/Users/yereb/OneDrive/Belgeler/GitHub/SE-2232-YAZILIM-S-STEM-ANAL-Z-/MovieCriticsSystem/src/moviecriticssystem/ManageUsersFrame.java</file>
+            <file>file:/C:/Users/yereb/OneDrive/Belgeler/GitHub/SE-2232-YAZILIM-S-STEM-ANAL-Z-/MovieCriticsSystem/src/moviecriticssystem/Genre.java</file>
+            <file>file:/C:/Users/yereb/OneDrive/Belgeler/GitHub/SE-2232-YAZILIM-S-STEM-ANAL-Z-/MovieCriticsSystem/src/moviecriticssystem/DatabaseConnection.java</file>
+            <file>file:/C:/Users/yereb/OneDrive/Belgeler/GitHub/SE-2232-YAZILIM-S-STEM-ANAL-Z-/MovieCriticsSystem/src/moviecriticssystem/ChildFrame.java</file>
+            <file>file:/C:/Users/yereb/OneDrive/Belgeler/GitHub/SE-2232-YAZILIM-S-STEM-ANAL-Z-/MovieCriticsSystem/src/moviecriticssystem/AdultFrame.java</file>
+            <file>file:/C:/Users/yereb/OneDrive/Belgeler/GitHub/SE-2232-YAZILIM-S-STEM-ANAL-Z-/MovieCriticsSystem/src/moviecriticssystem/AddMovieForm.java</file>
+            <file>file:/C:/Users/yereb/OneDrive/Belgeler/GitHub/SE-2232-YAZILIM-S-STEM-ANAL-Z-/MovieCriticsSystem/src/moviecriticssystem/Theme.java</file>
         </group>
     </open-files>
 </project-private>

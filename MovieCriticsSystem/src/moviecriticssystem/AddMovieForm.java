@@ -278,19 +278,19 @@ Integer leadActorId = getSelectedPersonId(leadingActorCombo);
 Integer suppActorId = getSelectedPersonId(supportingActorCombo);
 // --- TITLE ---
 if (title.isEmpty()) {
-    JOptionPane.showMessageDialog(this, "Title boş olamaz!");
+    JOptionPane.showMessageDialog(this, "Title cannot be empty!");
     return;
 }
 
 // --- GENRE ---
 if (genre == null || genre.isEmpty()) {
-    JOptionPane.showMessageDialog(this, "Genre boş olamaz!");
+    JOptionPane.showMessageDialog(this, "Genre cannot be empty!");
     return;
 }
 
 // --- LANGUAGE ---
 if (language.isEmpty()) {
-    JOptionPane.showMessageDialog(this, "Language boş olamaz!");
+    JOptionPane.showMessageDialog(this, "Language cannot be empty!");
     return;
 }
 
@@ -299,7 +299,7 @@ java.sql.Date releaseDate;
 try {
     releaseDate = java.sql.Date.valueOf(ReleaseDateTextField.getText().trim());
 } catch (Exception e) {
-    JOptionPane.showMessageDialog(this, "ReleaseDate yanlış format! (YYYY-MM-DD)");
+    JOptionPane.showMessageDialog(this, "Invalid date format! (YYYY-MM-DD)");
     return;
 }
 
@@ -309,12 +309,12 @@ try {
     rating = Integer.parseInt(RatingTextField.getText().trim());
 
     if (rating < 1 || rating > 10) {
-        JOptionPane.showMessageDialog(this, "Rating 1 ile 10 arasında olmalı!");
+        JOptionPane.showMessageDialog(this, "Rating must be between 1 and 10!");
         return;
     }
 
 } catch (NumberFormatException e) {
-    JOptionPane.showMessageDialog(this, "Rating sayı olmalı!");
+    JOptionPane.showMessageDialog(this, "Rating must be a number!");
     return;
 }
 

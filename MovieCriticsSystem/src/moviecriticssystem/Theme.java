@@ -49,20 +49,29 @@ public class Theme {
             } else if (c instanceof JPanel p) {
                 p.setBackground(BG);
                 apply(p);
+            }else if (c instanceof JCheckBox cb) {
+                cb.setOpaque(false);
+                cb.setForeground(TEXT);
+                cb.updateUI(); 
             }
         }
     }
 
     public static void applyToFrame(JFrame frame) {
-        frame.setSize(1280, 720);
-        frame.setLocationRelativeTo(null);
+    UIManager.put("CheckBox.foreground", TEXT);
+    UIManager.put("CheckBox.background", BG);
+    frame.setSize(1280, 720);
+    frame.setLocationRelativeTo(null);
+    frame.getContentPane().setBackground(BG);
+    apply((Container) frame.getContentPane());
+}
+
+    public static void applyToSub(JFrame frame) {
+        UIManager.put("CheckBox.foreground", TEXT);
+        UIManager.put("CheckBox.background", BG);
         frame.getContentPane().setBackground(BG);
         apply((Container) frame.getContentPane());
-    }
-    public static void applyToSub(JFrame frame){
-        frame.getContentPane().setBackground(BG);
-        apply((Container) frame.getContentPane());
-    }
+    }   
 
     public static void styleCard(JPanel card) {
         card.setBackground(BG);

@@ -74,41 +74,46 @@ public class ChildFrame extends javax.swing.JFrame {
         Movies.repaint();
     }
 
-    private void showMovieDetail(int movieId) {
-        String sql =
-            "SELECT m.*, YEAR(m.ReleaseDate) AS ReleaseYear, " +
-            "CONCAT(d.FirstName,' ',d.LastName) AS Director, " +
-            "CONCAT(la.FirstName,' ',la.LastName) AS LeadActor, " +
-            "CONCAT(sa.FirstName,' ',sa.LastName) AS SupportActor " +
-            "FROM Movies m " +
-            "LEFT JOIN Persons d  ON m.DirectorId        = d.PersonID " +
-            "LEFT JOIN Persons la ON m.LeadingActorId    = la.PersonID " +
-            "LEFT JOIN Persons sa ON m.SupportingActorId = sa.PersonID " +
-            "WHERE m.MovieID = ?";
-        try (Connection conn = DatabaseConnection.connect();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, movieId);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                String info = String.format(
-                    "Title    : %s%nYear     : %s%nGenre    : %s%n" +
-                    "Language : %s%nCountry  : %s%nDirector : %s%n" +
-                    "Lead     : %s%nSupport  : %s%n" +
-                    "Rating   : %d/10%nWatched  : %s%n%nComments:%n%s",
-                    rs.getString("Title"), rs.getString("ReleaseYear"),
-                    rs.getString("Genre"), rs.getString("Language"),
-                    rs.getString("CountryOfOrigin"), rs.getString("Director"),
-                    rs.getString("LeadActor"), rs.getString("SupportActor"),
-                    rs.getInt("Rating"),
-                    rs.getBoolean("Watched") ? "Yes" : "No",
-                    rs.getString("Comments") != null ? rs.getString("Comments") : "-");
-                JOptionPane.showMessageDialog(this, info,
-                    rs.getString("Title"), JOptionPane.INFORMATION_MESSAGE);
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+   private void showMovieDetail(int movieId) {
+    String sql = "SELECT m.*, YEAR(m.ReleaseDate) AS ReleaseYear, " +
+                 "CONCAT(d.FirstName,' ',d.LastName) AS Director, " +
+                 "CONCAT(la.FirstName,' ',la.LastName) AS LeadActor, " +
+                 "CONCAT(sa.FirstName,' ',sa.LastName) AS SupportActor " +
+                 "FROM Movies m " +
+                 "LEFT JOIN Persons d ON m.DirectorId = d.PersonID " +
+                 "LEFT JOIN Persons la ON m.LeadingActorId = la.PersonID " +
+                 "LEFT JOIN Persons sa ON m.SupportingActorId = sa.PersonID " +
+                 "WHERE m.MovieID = ?";
+
+    try (Connection conn = DatabaseConnection.connect();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, movieId);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            String info = String.format(
+                "Title : %s%nYear : %s%nGenre : %s%n" +
+                "Language : %s%nCountry : %s%nDirector : %s%n" +
+                "Lead : %s%nSupport : %s%n" +
+                "Rating : %d/10%nWatched : %s%n%nAbout:%n%s%n%nComments:%n%s",
+                rs.getString("Title"),
+                rs.getString("ReleaseYear"),
+                rs.getString("Genre"),
+                rs.getString("Language"),
+                rs.getString("CountryOfOrigin"),
+                rs.getString("Director"),
+                rs.getString("LeadActor"),
+                rs.getString("SupportActor"),
+                rs.getInt("Rating"),
+                rs.getBoolean("Watched") ? "Yes" : "No",
+                rs.getString("About") != null ? rs.getString("About") : "-",
+                rs.getString("Comments") != null ? rs.getString("Comments") : "-");
+
+            JOptionPane.showMessageDialog(this, info, rs.getString("Title"), JOptionPane.INFORMATION_MESSAGE);
         }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
     }
+}
 
     private void upsertInteraction(int movieId, String field, Object value) {
         try (Connection conn = DatabaseConnection.connect()) {
