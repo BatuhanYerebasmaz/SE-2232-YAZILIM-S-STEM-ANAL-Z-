@@ -28,7 +28,8 @@ public EditMovieForm(int movieId, java.awt.Frame parent) {
             parentFrame.toFront();
         }
     });
-}   private void loadPersonsToCombo() {
+}   
+private void loadPersonsToCombo() {
 
     directorCombo.addItem("-- Select --");
     leadingActorCombo.addItem("-- Select --");
