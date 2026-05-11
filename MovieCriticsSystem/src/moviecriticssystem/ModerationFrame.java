@@ -1,13 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package moviecriticssystem;
 
-/**
- *
- * @author yereb
- */
 public class ModerationFrame extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ModerationFrame.class.getName());
@@ -21,6 +13,7 @@ public ModerationFrame(java.awt.Frame parent) {
     initComponents();
     this.parentFrame = parent;
     loadInteractions();
+    Theme.applyToSub(this);
     addWindowListener(new java.awt.event.WindowAdapter() {
         @Override
         public void windowClosed(java.awt.event.WindowEvent e) {
@@ -28,6 +21,7 @@ public ModerationFrame(java.awt.Frame parent) {
             parentFrame.toFront();
         }
     });
+    
 }
 
 private void loadInteractions() {
@@ -92,13 +86,32 @@ private void updateStatus(String newStatus) {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        Buttons = new javax.swing.JPanel();
         ApproveButton = new javax.swing.JButton();
-        RejectButton = new javax.swing.JButton();
         RefreshButton = new javax.swing.JButton();
+        RejectButton = new javax.swing.JButton();
+        Tables = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        Buttons.setLayout(new java.awt.GridLayout(1, 0));
+
+        ApproveButton.setText("Approve");
+        ApproveButton.addActionListener(this::ApproveButtonActionPerformed);
+        Buttons.add(ApproveButton);
+
+        RefreshButton.setText("Refresh");
+        RefreshButton.addActionListener(this::RefreshButtonActionPerformed);
+        Buttons.add(RefreshButton);
+
+        RejectButton.setText("Reject");
+        RejectButton.addActionListener(this::RejectButtonActionPerformed);
+        Buttons.add(RejectButton);
+
+        getContentPane().add(Buttons, java.awt.BorderLayout.CENTER);
+
+        Tables.setPreferredSize(new java.awt.Dimension(500, 300));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -111,52 +124,14 @@ private void updateStatus(String newStatus) {
                 "InteractionID ", "Username", "Movie Title", "Rating", "Comment", "Status"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        Tables.setViewportView(jTable1);
         if (jTable1.getColumnModel().getColumnCount() > 0) {
             jTable1.getColumnModel().getColumn(0).setMinWidth(0);
             jTable1.getColumnModel().getColumn(0).setPreferredWidth(0);
             jTable1.getColumnModel().getColumn(0).setMaxWidth(0);
         }
 
-        ApproveButton.setText("Approve");
-        ApproveButton.addActionListener(this::ApproveButtonActionPerformed);
-
-        RejectButton.setText("Reject");
-        RejectButton.addActionListener(this::RejectButtonActionPerformed);
-
-        RefreshButton.setText("Refresh");
-        RefreshButton.addActionListener(this::RefreshButtonActionPerformed);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(40, 40, 40)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 630, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(119, 119, 119)
-                        .addComponent(ApproveButton)
-                        .addGap(119, 119, 119)
-                        .addComponent(RejectButton)
-                        .addGap(126, 126, 126)
-                        .addComponent(RefreshButton)))
-                .addContainerGap(68, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(49, 49, 49)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ApproveButton)
-                    .addComponent(RejectButton)
-                    .addComponent(RefreshButton))
-                .addContainerGap(85, Short.MAX_VALUE))
-        );
+        getContentPane().add(Tables, java.awt.BorderLayout.PAGE_START);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -200,9 +175,10 @@ private void updateStatus(String newStatus) {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton ApproveButton;
+    private javax.swing.JPanel Buttons;
     private javax.swing.JButton RefreshButton;
     private javax.swing.JButton RejectButton;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane Tables;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }

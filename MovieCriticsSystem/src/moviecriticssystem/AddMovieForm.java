@@ -22,8 +22,11 @@ private java.awt.Frame parentFrame;
     public AddMovieForm(java.awt.Frame parent) {
     initComponents();
     this.parentFrame = parent;
+    javax.swing.DefaultComboBoxModel<String> genreModel = new javax.swing.DefaultComboBoxModel<>();
+    for (Genre g : Genre.values()) genreModel.addElement(g.getDisplayName());
+    genreCombo.setModel(genreModel);
     loadPersonsToCombo();
-    
+    Theme.applyToSub(this);
     addWindowListener(new java.awt.event.WindowAdapter() {
         @Override
         public void windowClosed(java.awt.event.WindowEvent e) {
@@ -50,7 +53,6 @@ private java.awt.Frame parentFrame;
         AboutText = new javax.swing.JLabel();
         CommentsText = new javax.swing.JLabel();
         TitleTextField = new javax.swing.JTextField();
-        GenreTextField = new javax.swing.JTextField();
         LanguageTextField = new javax.swing.JTextField();
         ReleaseDateTextField = new javax.swing.JTextField();
         RatingTextField = new javax.swing.JTextField();
@@ -70,6 +72,7 @@ private java.awt.Frame parentFrame;
         directorCombo = new javax.swing.JComboBox<>();
         leadingActorCombo = new javax.swing.JComboBox<>();
         supportingActorCombo = new javax.swing.JComboBox<>();
+        genreCombo = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -111,6 +114,8 @@ private java.awt.Frame parentFrame;
 
         TitleText1.setText("Country :");
 
+        genreCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -132,7 +137,6 @@ private java.awt.Frame parentFrame;
                             .addComponent(TitleText1))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(GenreTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE)
                             .addComponent(TitleTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE)
                             .addComponent(LanguageTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE)
                             .addComponent(RatingTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE)
@@ -141,7 +145,8 @@ private java.awt.Frame parentFrame;
                             .addComponent(PosterTextField)
                             .addComponent(directorCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(leadingActorCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(supportingActorCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(supportingActorCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(genreCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(40, 40, 40)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -171,7 +176,7 @@ private java.awt.Frame parentFrame;
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(GenreText)
-                    .addComponent(GenreTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(genreCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(LanguageText)
@@ -262,7 +267,7 @@ private java.awt.Frame parentFrame;
     
     private void SaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveButtonActionPerformed
     String title = TitleTextField.getText().trim();
-String genre = GenreTextField.getText().trim();
+String genre = (String) genreCombo.getSelectedItem();
 String language = LanguageTextField.getText().trim();
 String about = aboutArea.getText().trim();
 String comments = commentsArea.getText().trim();
@@ -278,7 +283,7 @@ if (title.isEmpty()) {
 }
 
 // --- GENRE ---
-if (genre.isEmpty()) {
+if (genre == null || genre.isEmpty()) {
     JOptionPane.showMessageDialog(this, "Genre boş olamaz!");
     return;
 }
@@ -373,7 +378,6 @@ try (Connection conn = DatabaseConnection.connect()) {
     private javax.swing.JTextField CountryTextField;
     private javax.swing.JLabel GenreText;
     private javax.swing.JLabel GenreText1;
-    private javax.swing.JTextField GenreTextField;
     private javax.swing.JLabel LanguageText;
     private javax.swing.JLabel LanguageText1;
     private javax.swing.JTextField LanguageTextField;
@@ -393,6 +397,7 @@ try (Connection conn = DatabaseConnection.connect()) {
     private javax.swing.JTextArea aboutArea;
     private javax.swing.JTextArea commentsArea;
     private javax.swing.JComboBox<String> directorCombo;
+    private javax.swing.JComboBox<String> genreCombo;
     private javax.swing.JComboBox<String> leadingActorCombo;
     private javax.swing.JCheckBox restrictionCheckBox;
     private javax.swing.JComboBox<String> supportingActorCombo;

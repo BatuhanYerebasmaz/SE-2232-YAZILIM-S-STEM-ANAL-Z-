@@ -1,26 +1,38 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package moviecriticssystem;
-
 
 import java.sql.*;
 import javax.swing.JOptionPane;
-/**
- *
- * @author yereb
- */
-public class MainPage extends javax.swing.JFrame {
+
+public class LoginPage extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MainPage.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LoginPage.class.getName());
 
     /**
      * Creates new form MainPage
      */
-    public MainPage() {
+    public LoginPage() {
         initComponents();
         DatabaseConnection.connect();
+        Theme.applyToFrame(this);
+
+        /* Labels and password field aren't covered by Theme.apply — fix manually
+        for (javax.swing.JLabel lbl : new javax.swing.JLabel[]{UserNameText, UserPasswordtext, InvisibleLabel})
+            lbl.setForeground(Theme.TEXT_DIM);
+        LoginText.setForeground(Theme.TEXT);
+
+        PasswordTextField.setBackground(Theme.SURFACE);
+        PasswordTextField.setForeground(Theme.TEXT);
+        PasswordTextField.setCaretColor(Theme.TEXT);
+        PasswordTextField.setBorder(javax.swing.BorderFactory.createCompoundBorder(
+            javax.swing.BorderFactory.createLineBorder(Theme.SURFACE2),
+            javax.swing.BorderFactory.createEmptyBorder(4, 6, 4, 6)));
+
+        // Override the hardcoded green from initComponents
+        Button.setBackground(Theme.RED);*/
+        Theme.applyToSub(this);
+
+        setSize(420, 300);
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -168,7 +180,7 @@ public class MainPage extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new MainPage().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new LoginPage().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

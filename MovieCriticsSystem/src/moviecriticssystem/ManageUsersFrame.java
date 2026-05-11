@@ -23,7 +23,7 @@ public class ManageUsersFrame extends javax.swing.JFrame {
         initComponents();
         this.parentFrame = parent;
         loadUsers();
-
+        Theme.applyToSub(this);
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosed(java.awt.event.WindowEvent e) {
@@ -64,14 +64,39 @@ public class ManageUsersFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        Buttons = new javax.swing.JPanel();
         AddUserButton = new javax.swing.JButton();
         DeleteUserButton = new javax.swing.JButton();
         ResetPasswordButton = new javax.swing.JButton();
         RefreshButton = new javax.swing.JButton();
+        Table = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        Buttons.setPreferredSize(new java.awt.Dimension(700, 50));
+        Buttons.setRequestFocusEnabled(false);
+        Buttons.setLayout(new java.awt.GridLayout());
+
+        AddUserButton.setText("Add User");
+        AddUserButton.addActionListener(this::AddUserButtonActionPerformed);
+        Buttons.add(AddUserButton);
+
+        DeleteUserButton.setText("Delete User");
+        DeleteUserButton.addActionListener(this::DeleteUserButtonActionPerformed);
+        Buttons.add(DeleteUserButton);
+
+        ResetPasswordButton.setText("Reset Password");
+        ResetPasswordButton.addActionListener(this::ResetPasswordButtonActionPerformed);
+        Buttons.add(ResetPasswordButton);
+
+        RefreshButton.setText("Refresh");
+        RefreshButton.addActionListener(this::RefreshButtonActionPerformed);
+        Buttons.add(RefreshButton);
+
+        getContentPane().add(Buttons, java.awt.BorderLayout.SOUTH);
+
+        Table.setPreferredSize(new java.awt.Dimension(700, 200));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -84,58 +109,14 @@ public class ManageUsersFrame extends javax.swing.JFrame {
                 "UserID", "Username", "Email", "UserType "
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        Table.setViewportView(jTable1);
         if (jTable1.getColumnModel().getColumnCount() > 0) {
             jTable1.getColumnModel().getColumn(0).setMinWidth(0);
             jTable1.getColumnModel().getColumn(0).setPreferredWidth(0);
             jTable1.getColumnModel().getColumn(0).setMaxWidth(0);
         }
 
-        AddUserButton.setText("Add User");
-        AddUserButton.addActionListener(this::AddUserButtonActionPerformed);
-
-        DeleteUserButton.setText("Delete User");
-        DeleteUserButton.addActionListener(this::DeleteUserButtonActionPerformed);
-
-        ResetPasswordButton.setText("Reset Password");
-        ResetPasswordButton.addActionListener(this::ResetPasswordButtonActionPerformed);
-
-        RefreshButton.setText("Refresh");
-        RefreshButton.addActionListener(this::RefreshButtonActionPerformed);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1)
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(102, 102, 102)
-                .addComponent(AddUserButton)
-                .addGap(109, 109, 109)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(RefreshButton)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(DeleteUserButton)
-                        .addGap(105, 105, 105)
-                        .addComponent(ResetPasswordButton)))
-                .addContainerGap(83, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 74, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(AddUserButton)
-                    .addComponent(DeleteUserButton)
-                    .addComponent(ResetPasswordButton))
-                .addGap(26, 26, 26)
-                .addComponent(RefreshButton)
-                .addGap(14, 14, 14))
-        );
+        getContentPane().add(Table, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -236,10 +217,11 @@ public class ManageUsersFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AddUserButton;
+    private javax.swing.JPanel Buttons;
     private javax.swing.JButton DeleteUserButton;
     private javax.swing.JButton RefreshButton;
     private javax.swing.JButton ResetPasswordButton;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane Table;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }

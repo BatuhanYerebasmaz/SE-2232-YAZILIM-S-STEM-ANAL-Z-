@@ -1,31 +1,26 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package moviecriticssystem;
 
 import java.sql.*;
 import javax.swing.JOptionPane;
-/**
- *
- * @author yereb
- */
-public class EdditMovieForm extends javax.swing.JFrame {
+
+public class EditMovieForm extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(EdditMovieForm.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(EditMovieForm.class.getName());
     private int movieId;
     /**
      * Creates new form AddMovieForm
      */
 private java.awt.Frame parentFrame;
 
-public EdditMovieForm(int movieId, java.awt.Frame parent) {
+public EditMovieForm(int movieId, java.awt.Frame parent) {
     initComponents();
     this.movieId = movieId;
     this.parentFrame = parent;
+    Theme.applyToSub(this);
+    genreCombo.removeAllItems();
+    for (Genre g : Genre.values()) genreCombo.addItem(g.getDisplayName());
     loadPersonsToCombo();
     loadMovieData();
-    // form kapanınca parent'ı tekrar aç
     addWindowListener(new java.awt.event.WindowAdapter() {
         @Override
         public void windowClosed(java.awt.event.WindowEvent e) {
@@ -82,7 +77,6 @@ private Integer getSelectedPersonId(javax.swing.JComboBox<String> combo) {
         AboutText = new javax.swing.JLabel();
         CommentsText = new javax.swing.JLabel();
         TitleTextField = new javax.swing.JTextField();
-        GenreTextField = new javax.swing.JTextField();
         LanguageTextField = new javax.swing.JTextField();
         ReleaseDateTextField = new javax.swing.JTextField();
         RatingTextField = new javax.swing.JTextField();
@@ -102,6 +96,7 @@ private Integer getSelectedPersonId(javax.swing.JComboBox<String> combo) {
         PosterTextField = new javax.swing.JTextField();
         CountryTextField = new javax.swing.JTextField();
         TitleText1 = new javax.swing.JLabel();
+        genreCombo = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -143,6 +138,8 @@ private Integer getSelectedPersonId(javax.swing.JComboBox<String> combo) {
 
         TitleText1.setText("Country :");
 
+        genreCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -158,12 +155,12 @@ private Integer getSelectedPersonId(javax.swing.JComboBox<String> combo) {
                             .addComponent(GenreText)
                             .addComponent(TitleText))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(GenreTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(TitleTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(LanguageTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(RatingTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(ReleaseDateTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(TitleTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE)
+                            .addComponent(LanguageTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE)
+                            .addComponent(RatingTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE)
+                            .addComponent(ReleaseDateTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE)
+                            .addComponent(genreCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(37, 37, 37)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -208,7 +205,7 @@ private Integer getSelectedPersonId(javax.swing.JComboBox<String> combo) {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(GenreText)
-                    .addComponent(GenreTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(genreCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(LanguageText)
@@ -276,7 +273,13 @@ private Integer getSelectedPersonId(javax.swing.JComboBox<String> combo) {
 
         if (rs.next()) {
             TitleTextField.setText(rs.getString("Title"));
-            GenreTextField.setText(rs.getString("Genre"));
+            String dbGenre = rs.getString("Genre");
+            for (int i = 0; i < genreCombo.getItemCount(); i++) {
+                if (genreCombo.getItemAt(i).equalsIgnoreCase(dbGenre)) {
+                    genreCombo.setSelectedIndex(i);
+                    break;
+                }
+            }
             LanguageTextField.setText(rs.getString("Language"));
             ReleaseDateTextField.setText(rs.getDate("ReleaseDate").toString());
             RatingTextField.setText(String.valueOf(rs.getInt("Rating")));
@@ -309,7 +312,7 @@ private Integer getSelectedPersonId(javax.swing.JComboBox<String> combo) {
     
     private void SaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveButtonActionPerformed
 String title = TitleTextField.getText().trim();
-String genre = GenreTextField.getText().trim();
+String genre = (String) genreCombo.getSelectedItem();
 String language = LanguageTextField.getText().trim();
 String about = aboutArea.getText().trim();
 String comments = commentsArea.getText().trim();
@@ -424,7 +427,6 @@ try (Connection conn = DatabaseConnection.connect()) {
     private javax.swing.JTextField CountryTextField;
     private javax.swing.JLabel GenreText;
     private javax.swing.JLabel GenreText1;
-    private javax.swing.JTextField GenreTextField;
     private javax.swing.JLabel LanguageText;
     private javax.swing.JLabel LanguageText1;
     private javax.swing.JTextField LanguageTextField;
@@ -444,6 +446,7 @@ try (Connection conn = DatabaseConnection.connect()) {
     private javax.swing.JTextArea aboutArea;
     private javax.swing.JTextArea commentsArea;
     private javax.swing.JComboBox<String> directorCombo;
+    private javax.swing.JComboBox<String> genreCombo;
     private javax.swing.JComboBox<String> leadingActorCombo;
     private javax.swing.JCheckBox restrictionCheckBox;
     private javax.swing.JComboBox<String> supportingActorCombo;
